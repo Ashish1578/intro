@@ -65,8 +65,12 @@
         }
 
         .theme-toggle:hover {
-            transform: scale(1.1) rotate(180deg);
+            transform: scale(1.1);
             box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .light-theme .theme-toggle:hover {
+            box-shadow: 0 0 20px rgba(26, 26, 26, 0.3);
         }
 
         .light-theme .theme-toggle {
@@ -382,7 +386,7 @@
             position: fixed;
             width: 12px;
             height: 12px;
-            background: #00ff88;
+            background: #3b82f6;
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
@@ -391,7 +395,7 @@
         }
 
         .light-theme .cursor-dot {
-            background: #1a1a1a;
+            background: #ef4444;
         }
 
         .cursor-dot.expand {
