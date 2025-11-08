@@ -16,32 +16,45 @@
             background: #0a0a0a;
             color: #fff;
             overflow-x: hidden;
+            cursor: none;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
-        /* Animated background particles */
-        .particles {
+        body.light-theme {
+            background: #f5f5f5;
+            color: #1a1a1a;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .particle {
-            position: absolute;
-            background: #00ff88;
+            top: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            background: #1a1a1a;
+            border: 2px solid #00ff88;
             border-radius: 50%;
-            opacity: 0.3;
-            animation: float 20s infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: none;
+            z-index: 1000;
+            transition: all 0.3s ease;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0) translateX(0); }
-            25% { transform: translateY(-100px) translateX(50px); }
-            50% { transform: translateY(-50px) translateX(-50px); }
-            75% { transform: translateY(-150px) translateX(25px); }
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(180deg);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .light-theme .theme-toggle {
+            background: #fff;
+            border-color: #1a1a1a;
+        }
+
+        .theme-icon {
+            font-size: 1.5rem;
         }
 
         /* Hero Section */
@@ -127,6 +140,12 @@
             transition: all 0.8s ease;
         }
 
+        .light-theme .content-box {
+            background: #fff;
+            border-color: #ddd;
+            color: #1a1a1a;
+        }
+
         .content-box.visible {
             transform: translateY(0);
             opacity: 1;
@@ -135,6 +154,15 @@
         .content-box:hover {
             border-color: #00ff88;
             box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .light-theme .content-box:hover {
+            border-color: #1a1a1a;
+            box-shadow: 0 0 30px rgba(26, 26, 26, 0.2);
+        }
+
+        .light-theme .section-title {
+            color: #1a1a1a;
         }
 
         .section-title {
@@ -164,7 +192,12 @@
             border: 1px solid #444;
             text-align: center;
             transition: all 0.3s ease;
-            cursor: pointer;
+            cursor: none;
+        }
+
+        .light-theme .skill-card {
+            background: #f9f9f9;
+            border-color: #ddd;
         }
 
         .skill-card:hover {
@@ -172,6 +205,12 @@
             border-color: #00ff88;
             background: #333;
             box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .light-theme .skill-card:hover {
+            border-color: #1a1a1a;
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(26, 26, 26, 0.2);
         }
 
         .skill-icon {
@@ -196,9 +235,22 @@
             transition: all 0.3s ease;
         }
 
+        .light-theme .stat-box {
+            background: linear-gradient(135deg, #fff, #f9f9f9);
+            border-color: #ddd;
+        }
+
         .stat-box:hover {
             transform: scale(1.05);
             border-color: #00ff88;
+        }
+
+        .light-theme .stat-box:hover {
+            border-color: #1a1a1a;
+        }
+
+        .light-theme .stat-number {
+            color: #1a1a1a;
         }
 
         .stat-number {
@@ -229,11 +281,16 @@
             color: #00ff88;
             font-size: 1.1rem;
             border-radius: 50px;
-            cursor: pointer;
+            cursor: none;
             transition: all 0.3s ease;
             text-decoration: none;
             position: relative;
             overflow: hidden;
+        }
+
+        .light-theme .btn {
+            border-color: #1a1a1a;
+            color: #1a1a1a;
         }
 
         .btn::before {
@@ -250,6 +307,10 @@
             z-index: -1;
         }
 
+        .light-theme .btn::before {
+            background: #1a1a1a;
+        }
+
         .btn:hover::before {
             width: 300px;
             height: 300px;
@@ -261,9 +322,19 @@
             box-shadow: 0 10px 30px rgba(0, 255, 136, 0.4);
         }
 
+        .light-theme .btn:hover {
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(26, 26, 26, 0.3);
+        }
+
         .btn-primary {
             background: #00ff88;
             color: #0a0a0a;
+        }
+
+        .light-theme .btn-primary {
+            background: #1a1a1a;
+            color: #fff;
         }
 
         /* Parallax Image */
@@ -285,21 +356,29 @@
             padding: 20px;
         }
 
-        /* Mouse follower */
-        .cursor-follower {
+        /* Custom Cursor */
+        .cursor-dot {
             position: fixed;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #00ff88;
+            width: 12px;
+            height: 12px;
+            background: #00ff88;
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
-            transition: all 0.1s ease;
-            display: none;
+            transition: transform 0.2s ease, background 0.3s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .light-theme .cursor-dot {
+            background: #1a1a1a;
+        }
+
+        .cursor-dot.expand {
+            transform: translate(-50%, -50%) scale(3);
         }
 
         @media (min-width: 768px) {
-            .cursor-follower {
+            .cursor-dot {
                 display: block;
             }
         }
@@ -316,11 +395,13 @@
     </style>
 </head>
 <body>
-    <!-- Cursor Follower -->
-    <div class="cursor-follower" id="cursorFollower"></div>
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle">
+        <span class="theme-icon">🌙</span>
+    </button>
 
-    <!-- Particles Background -->
-    <div class="particles" id="particles"></div>
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursorDot"></div>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -421,7 +502,7 @@
 
     <script>
         // Typing Animation
-        const text = "HI, I'M CONDOM.";
+        const text = "HI, I'M ASHISH";
         const typingText = document.getElementById('typingText');
         let index = 0;
 
@@ -434,19 +515,18 @@
         }
         setTimeout(type, 500);
 
-        // Create Particles
-        const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 20; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.width = Math.random() * 5 + 2 + 'px';
-            particle.style.height = particle.style.width;
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.top = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 20 + 's';
-            particle.style.animationDuration = Math.random() * 20 + 10 + 's';
-            particlesContainer.appendChild(particle);
-        }
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('.theme-icon');
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+            if (document.body.classList.contains('light-theme')) {
+                themeIcon.textContent = '☀️';
+            } else {
+                themeIcon.textContent = '🌙';
+            }
+        });
 
         // Scroll Animations
         const observerOptions = {
@@ -508,39 +588,21 @@
             }
         });
 
-        // Custom Cursor Follower
-        const cursorFollower = document.getElementById('cursorFollower');
-        let mouseX = 0, mouseY = 0;
-        let followerX = 0, followerY = 0;
+        // Custom Cursor
+        const cursorDot = document.getElementById('cursorDot');
 
         document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
         });
 
-        function animateCursor() {
-            const distX = mouseX - followerX;
-            const distY = mouseY - followerY;
-            
-            followerX += distX * 0.1;
-            followerY += distY * 0.1;
-            
-            cursorFollower.style.left = followerX + 'px';
-            cursorFollower.style.top = followerY + 'px';
-            
-            requestAnimationFrame(animateCursor);
-        }
-        animateCursor();
-
         // Hover effect on interactive elements
-        document.querySelectorAll('.btn, .skill-card, .stat-box').forEach(el => {
+        document.querySelectorAll('.btn, .skill-card, .stat-box, .theme-toggle').forEach(el => {
             el.addEventListener('mouseenter', () => {
-                cursorFollower.style.transform = 'scale(2)';
-                cursorFollower.style.background = 'rgba(0, 255, 136, 0.2)';
+                cursorDot.classList.add('expand');
             });
             el.addEventListener('mouseleave', () => {
-                cursorFollower.style.transform = 'scale(1)';
-                cursorFollower.style.background = 'transparent';
+                cursorDot.classList.remove('expand');
             });
         });
     </script>
