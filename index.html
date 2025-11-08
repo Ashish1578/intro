@@ -51,6 +51,20 @@ body{
     radial-gradient(1200px 600px at 10% 10%, rgba(0,229,255,0.03), transparent 8%),
     radial-gradient(900px 500px at 90% 85%, rgba(255,107,53,0.03), transparent 10%),
     linear-gradient(180deg, var(--bg-dark), var(--bg-deep));
+  /* Hide default cursor for desktop devices */
+  cursor: none;
+}
+
+/* Hide default cursor on all elements */
+* {
+  cursor: none !important;
+}
+
+/* Show default cursor on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  body, * {
+    cursor: auto !important;
+  }
 }
 
 /* Animated gradient background */
@@ -206,19 +220,6 @@ body::after{
   mix-blend-mode:difference;
 }
 
-.cursor-ring{
-  position:fixed;
-  width:32px;
-  height:32px;
-  border:1px solid rgba(255,255,255,0.3);
-  border-radius:50%;
-  pointer-events:none;
-  z-index:9999;
-  transform:translate(-50%, -50%);
-  transition:width 0.3s var(--transition-smooth), height 0.3s var(--transition-smooth), opacity 0.3s ease;
-  mix-blend-mode:difference;
-}
-
 .cursor-dot.hover{
   width:32px;
   height:32px;
@@ -226,14 +227,9 @@ body::after{
   border:2px solid var(--accent-violet);
 }
 
-.cursor-ring.hover{
-  width:56px;
-  height:56px;
-}
-
 /* Hide cursor on touch devices */
 @media (hover: none) and (pointer: coarse) {
-  .cursor-dot, .cursor-ring {
+  .cursor-dot {
     display: none;
   }
 }
@@ -355,7 +351,7 @@ body::after{
   align-items:center;
   gap:0.5rem;
   transition:all 0.3s var(--transition-smooth);
-  cursor:pointer;
+  cursor:none; /* Hide default cursor on buttons */
   border:none;
   position:relative;
   overflow:hidden;
@@ -516,7 +512,7 @@ body::after{
   overflow:hidden;
   transition:all 0.5s var(--transition-smooth);
   position:relative;
-  cursor:pointer;
+  cursor:none; /* Hide default cursor on cards */
   opacity:0;
   transform:translateY(40px);
   transform-style:preserve-3d;
@@ -643,6 +639,7 @@ body::after{
   border:1px solid var(--border-subtle);
   border-radius:20px;
   transition:all 0.4s var(--transition-smooth);
+  cursor:none; /* Hide default cursor on skill categories */
   opacity:0;
   transform:translateY(30px);
   transform-style:preserve-3d;
@@ -724,6 +721,7 @@ body::after{
   transition:all 0.4s var(--transition-smooth);
   text-decoration:none;
   color:inherit;
+  cursor:none; /* Hide default cursor on contact methods */
 }
 
 .contact-method:hover{
@@ -792,6 +790,7 @@ body::after{
   text-decoration:none;
   font-size:0.9rem;
   transition:color 0.3s ease;
+  cursor:none; /* Hide default cursor on footer links */
 }
 
 .footer-links a:hover{
@@ -972,7 +971,6 @@ body::after{
 
 <!-- Custom Cursor -->
 <div class="cursor-dot"></div>
-<div class="cursor-ring"></div>
 
 <!-- Hero Section -->
 <section class="hero-section">
@@ -1010,7 +1008,7 @@ body::after{
       Building <span class="highlight">Exceptional</span><br>Digital Experiences
     </h2>
     <p class="hero-description">
-      I craft meticulously detailed, performance-driven web applications that blur the line between design and engineering. Every pixel, animation, and interaction is intentional.
+      I craft meticulously detailed, performance-driven web applications that blur line between design and engineering. Every pixel, animation, and interaction is intentional.
     </p>
     <div class="hero-cta">
       <a href="#work" class="btn btn-primary">View My Work</a>
@@ -1145,7 +1143,7 @@ body::after{
     <div class="section-label">Expertise</div>
     <h2 class="section-title">Technical Proficiency</h2>
     <p class="section-description">
-      Deep expertise across the full spectrum of modern web development, with a focus on performance and user experience.
+      Deep expertise across full spectrum of modern web development, with a focus on performance and user experience.
     </p>
   </div>
   
@@ -1300,12 +1298,9 @@ window.addEventListener('load', () => {
    ========================================================= */
 if (CONFIG.ENABLE_CURSOR && !CONFIG.PREFERS_REDUCED_MOTION) {
   const cursorDot = qs('.cursor-dot');
-  const cursorRing = qs('.cursor-ring');
   
   let mouseX = window.innerWidth / 2;
   let mouseY = window.innerHeight / 2;
-  let ringX = mouseX;
-  let ringY = mouseY;
   
   document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
@@ -1315,27 +1310,14 @@ if (CONFIG.ENABLE_CURSOR && !CONFIG.PREFERS_REDUCED_MOTION) {
     cursorDot.style.top = mouseY + 'px';
   });
   
-  function animateRing() {
-    ringX = lerp(ringX, mouseX, 0.15);
-    ringY = lerp(ringY, mouseY, 0.15);
-    
-    cursorRing.style.left = ringX + 'px';
-    cursorRing.style.top = ringY + 'px';
-    
-    requestAnimationFrame(animateRing);
-  }
-  animateRing();
-  
   // Hover effects
   const hoverElements = qsa('a, button, .project-card, .skill-category, .contact-method');
   hoverElements.forEach(el => {
     el.addEventListener('mouseenter', () => {
       cursorDot.classList.add('hover');
-      cursorRing.classList.add('hover');
     });
     el.addEventListener('mouseleave', () => {
       cursorDot.classList.remove('hover');
-      cursorRing.classList.remove('hover');
     });
   });
   
@@ -1361,7 +1343,6 @@ if (CONFIG.ENABLE_CURSOR && !CONFIG.PREFERS_REDUCED_MOTION) {
   }, {passive: true});
 } else {
   qs('.cursor-dot').style.display = 'none';
-  qs('.cursor-ring').style.display = 'none';
 }
 
 /* =========================================================
