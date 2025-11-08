@@ -3,54 +3,88 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Ashish — Ultra-Cinematic Portfolio</title>
-<meta name="description" content="Ultra-cinematic interactive portfolio with parallax, code rain, morphing blobs, particles, animated borders, and more." />
+<title>Ashish — Creative Engineer</title>
+<meta name="description" content="Precision-crafted portfolio showcasing interactive design, advanced animations, and meticulous attention to detail." />
 <style>
 /* =========================================================
-   Reset + Base
+   Design System & Variables
    ========================================================= */
 :root{
-  --bg-0: #030303;
-  --bg-1: #060608;
-  --glass: rgba(255,255,255,0.02);
-  --fg: #eaeaea;
-  --muted: #9a9a9a;
-  --accent-a: #00f0ff;   /* cyan */
-  --accent-b: #ff6b35;   /* orange */
-  --accent-c: #9b5cff;   /* purple (used sparingly) */
-  --card: #0f0f0f;
-  --glass-2: rgba(255,255,255,0.03);
+  --bg-deep: #000000;
+  --bg-dark: #0a0a0a;
+  --bg-mid: #111111;
+  --glass-subtle: rgba(255,255,255,0.015);
+  --glass-medium: rgba(255,255,255,0.03);
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --text-tertiary: #666666;
+  --accent-cyan: #00e5ff;
+  --accent-violet: #a855f7;
+  --accent-amber: #fbbf24;
+  --accent-orange: #ff6b35;
+  --border-subtle: rgba(255,255,255,0.06);
+  --shadow-soft: rgba(0,0,0,0.5);
+  --shadow-hard: rgba(0,0,0,0.8);
+  --transition-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:var(--bg-0);color:var(--fg);font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
-a{color:inherit}
-img{max-width:100%;display:block}
-button{font:inherit}
 
 /* =========================================================
-   Global Layout
+   Reset & Base Typography
    ========================================================= */
+*{box-sizing:border-box;margin:0;padding:0}
+html{
+  scroll-behavior:smooth;
+  font-size:clamp(14px, 1.2vw, 18px);
+}
 body{
+  min-height:100vh;
+  background:var(--bg-deep);
+  color:var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Arial, sans-serif;
+  line-height:1.6;
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
-  line-height:1.45;
+  position:relative;
   background-image:
-    radial-gradient(1200px 600px at 10% 10%, rgba(0,240,255,0.03), transparent 8%),
+    radial-gradient(1200px 600px at 10% 10%, rgba(0,229,255,0.03), transparent 8%),
     radial-gradient(900px 500px at 90% 85%, rgba(255,107,53,0.03), transparent 10%),
-    linear-gradient(180deg, var(--bg-1), var(--bg-0));
-  transition: background 800ms linear;
+    linear-gradient(180deg, var(--bg-dark), var(--bg-deep));
 }
 
-/* prefers-reduced-motion: disable heavy animations */
-@media (prefers-reduced-motion: reduce) {
-  :root { --motion-scale: 0; }
-  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+/* Animated gradient background */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0,229,255,0.08), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(168,85,247,0.06), transparent 50%),
+    radial-gradient(ellipse 70% 50% at 0% 100%, rgba(251,191,36,0.04), transparent 50%);
+  opacity:0;
+  animation: fadeInBg 1.2s ease forwards;
+  pointer-events:none;
+  z-index:0;
 }
 
-/* =========================================================
-   Cinematic overlay: vignette + film grain + letterbox bars
-   ========================================================= */
+@keyframes fadeInBg{
+  to{opacity:1}
+}
+
+/* Noise texture overlay */
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity:0.015;
+  pointer-events:none;
+  z-index:1;
+  mix-blend-mode:overlay;
+}
+
+/* Cinematic overlay: vignette + film grain + letterbox bars */
 .cinematic {
   position:fixed; inset:0; pointer-events:none; z-index:9997;
   mix-blend-mode:overlay;
@@ -64,134 +98,857 @@ body{
 }
 .cinematic .film-bars.bottom { top:auto; bottom:0; transform:translateY(2vh); }
 
-/* soft bokeh glows */
-.bokeh {
-  position:fixed; pointer-events:none; z-index:0; inset:0; mix-blend-mode:screen;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  html{scroll-behavior:auto}
+  .cinematic { display: none; }
 }
 
 /* =========================================================
-   Header / Theme controls
+   Navigation Header
    ========================================================= */
-.header {
-  position:fixed; top:18px; left:18px; display:flex; gap:12px; align-items:center; z-index:9998;
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  border-radius:12px; padding:8px; border:1px solid rgba(255,255,255,0.03);
+.nav-header{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:1000;
+  padding:1.5rem 2rem;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  background:linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 100%);
+  border-bottom:1px solid var(--border-subtle);
+  opacity:0;
+  transform:translateY(-100%);
+  animation: slideDown 0.8s var(--transition-smooth) 0.2s forwards;
 }
-.header .brand { font-weight:800; letter-spacing:1px; color:var(--fg); padding:6px 10px; border-radius:8px; display:inline-flex; align-items:center; gap:8px;}
-.header button { background:transparent; border:1px solid rgba(255,255,255,0.04); color:var(--fg); padding:8px 12px; border-radius:8px; cursor:pointer; }
-.header .small { font-size:0.85rem; opacity:0.9; }
+
+@keyframes slideDown{
+  to{opacity:1; transform:translateY(0)}
+}
+
+.nav-logo{
+  font-size:1.1rem;
+  font-weight:700;
+  letter-spacing:0.05em;
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
+}
+
+.nav-logo-icon{
+  width:8px;
+  height:8px;
+  background:linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));
+  border-radius:50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse{
+  0%, 100%{opacity:1; transform:scale(1)}
+  50%{opacity:0.6; transform:scale(1.2)}
+}
+
+.nav-links{
+  display:flex;
+  gap:2rem;
+  list-style:none;
+}
+
+.nav-links a{
+  color:var(--text-secondary);
+  text-decoration:none;
+  font-size:0.9rem;
+  font-weight:500;
+  position:relative;
+  transition:color 0.3s ease;
+}
+
+.nav-links a::after{
+  content:'';
+  position:absolute;
+  bottom:-4px;
+  left:0;
+  width:0;
+  height:2px;
+  background:linear-gradient(90deg, var(--accent-cyan), var(--accent-violet));
+  transition:width 0.4s var(--transition-smooth);
+}
+
+.nav-links a:hover{
+  color:var(--text-primary);
+}
+
+.nav-links a:hover::after{
+  width:100%;
+}
 
 /* =========================================================
-   Custom cursor (dot + ring)
+   Custom Cursor System
    ========================================================= */
-.cursor-dot { position:fixed; width:12px; height:12px; border-radius:50%; background:var(--accent-a); transform:translate(-50%,-50%); pointer-events:none; z-index:9999; transition:transform .12s cubic-bezier(.2,.8,.2,1), background .18s }
-.cursor-ring { position:fixed; width:36px; height:36px; border-radius:50%; border:2px solid rgba(255,255,255,0.08); transform:translate(-50%,-50%); pointer-events:none; z-index:9999; transition:transform .14s ease; }
+.cursor-dot{
+  position:fixed;
+  width:8px;
+  height:8px;
+  background:var(--accent-cyan);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:10000;
+  transform:translate(-50%, -50%);
+  transition:width 0.2s ease, height 0.2s ease, background 0.2s ease;
+  mix-blend-mode:difference;
+}
 
-/* expand/shrink states */
-.cursor-dot.expand { transform:translate(-50%,-50%) scale(3); background:var(--accent-b) }
-.cursor-ring.hidden { opacity:0; transform:translate(-50%,-50%) scale(.6); }
+.cursor-ring{
+  position:fixed;
+  width:32px;
+  height:32px;
+  border:1px solid rgba(255,255,255,0.3);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:9999;
+  transform:translate(-50%, -50%);
+  transition:width 0.3s var(--transition-smooth), height 0.3s var(--transition-smooth), opacity 0.3s ease;
+  mix-blend-mode:difference;
+}
+
+.cursor-dot.hover{
+  width:32px;
+  height:32px;
+  background:transparent;
+  border:2px solid var(--accent-violet);
+}
+
+.cursor-ring.hover{
+  width:56px;
+  height:56px;
+}
+
+/* Hide cursor on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .cursor-dot, .cursor-ring {
+    display: none;
+  }
+}
 
 /* =========================================================
-   Hero: giant title + code rain canvas + morph blob
+   Hero Section
    ========================================================= */
-.section-hero {
-  min-height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; position:relative; overflow:hidden; padding:48px 20px;
+.hero-section{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  padding:8rem 2rem 4rem;
+  z-index:2;
   perspective:1200px;
 }
-.hero-content {
-  z-index:10; max-width:1200px; width:100%; transform-style:preserve-3d;
+
+.hero-content{
+  max-width:1200px;
+  width:100%;
+  opacity:0;
+  animation: fadeInUp 1s var(--transition-smooth) 0.5s forwards;
+  transform-style:preserve-3d;
 }
-.title {
-  font-size:clamp(3rem,9vw,9.2rem); font-weight:900; line-height:0.92; letter-spacing:-2px;
-  background:linear-gradient(90deg, var(--accent-a), var(--accent-b), var(--accent-c)); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  margin-bottom:16px; transform: translateZ(40px) rotateX(0.01deg);
+
+@keyframes fadeInUp{
+  from{opacity:0; transform:translateY(60px)}
+  to{opacity:1; transform:translateY(0)}
 }
-.subtitle { font-size:clamp(1rem,2.5vw,1.5rem); opacity:.86; margin-bottom:28px; transform: translateZ(30px) }
 
-/* code rain canvas sits behind hero */
-#codeRain { position:absolute; inset:0; z-index:2; pointer-events:none; mix-blend-mode:screen; opacity:0.22; filter:blur(0.6px) contrast(0.9) }
-
-/* morphing blob (SVG) with goo */
-.blob-wrap { position:absolute; inset:auto; z-index:3; pointer-events:none; transform-origin:center; opacity:0.7 }
-.blob-wrap svg { width:900px; height:500px; display:block; transform:translate(-50%,-50%); }
-
-/* cinematic subtitle accent line */
-.hero-cta { display:flex; gap:12px; justify-content:center; margin-top:18px; transform: translateZ(20px); }
-
-/* =========================================================
-   Sections: consistent card style + scroll-synced glowing borders
-   ========================================================= */
-.section {
-  padding:120px 20px; min-height:85vh; display:flex; align-items:center; justify-content:center; position:relative; overflow:visible;
+/* Cinematic Title - "HI, I'M ASHISH." */
+.hero-title {
+  font-size:clamp(3rem,9vw,9.2rem);
+  font-weight:900;
+  line-height:0.92;
+  letter-spacing:-2px;
+  background:linear-gradient(90deg, var(--accent-cyan), var(--accent-orange), var(--accent-violet));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:2rem;
+  transform: translateZ(40px) rotateX(0.01deg);
 }
-.card {
-  width:100%; max-width:1100px; padding:48px; border-radius:20px; background:linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.01));
-  border:1px solid rgba(255,255,255,0.03); box-shadow: 0 30px 80px rgba(0,0,0,0.6);
-  transform: translateY(40px) rotateX(0.01deg); opacity:0; transition: transform 900ms cubic-bezier(.2,1,.22,1), opacity 600ms ease-out;
-  will-change: transform, opacity;
+
+.hero-eyebrow{
+  font-size:0.85rem;
+  text-transform:uppercase;
+  letter-spacing:0.15em;
+  color:var(--accent-cyan);
+  margin-bottom:1.5rem;
+  font-weight:600;
+  display:inline-block;
   position:relative;
-  overflow:visible;
-}
-.card.visible { transform:translateY(0); opacity:1; }
-
-/* glowing borders (animated by JS on scroll) */
-.card .glow-border {
-  position:absolute; inset:-2px; pointer-events:none; border-radius:20px; padding:2px;
-  background: linear-gradient(90deg, rgba(0,240,255,0.12), rgba(255,107,53,0.12));
-  mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
-  -webkit-mask-composite: xor;
-  mix-blend-mode:screen; opacity:0; transition:opacity .6s ease, transform .6s ease;
+  padding-left:2rem;
+  transform: translateZ(40px) rotateX(0.01deg);
 }
 
-/* inside content */
-.card h3 { font-size:clamp(1.6rem,2.8vw,2.4rem); margin-bottom:12px; color:var(--fg) }
-.card p { color:var(--muted); line-height:1.7; font-size:1rem; margin-bottom:18px; }
-
-/* skill grid with stagger */
-.skills-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:18px; margin-top:18px }
-.skill { padding:18px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); transition:transform 400ms cubic-bezier(.2,.9,.2,1), box-shadow 300ms; transform-origin:center; }
-.skill:hover { transform:translateY(-8px) scale(1.02); box-shadow:0 12px 40px rgba(0,0,0,0.6); }
-
-/* cinematic divider */
-.divider { height:1px; width:80%; margin:20px auto; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent); border-radius:4px }
-
-/* CTA */
-.cta-row { display:flex; gap:16px; justify-content:center; margin-top:18px; flex-wrap:wrap }
-.btn {
-  border-radius:999px; padding:14px 28px; border:2px solid rgba(255,255,255,0.06); background:transparent; color:var(--fg); cursor:pointer; font-weight:700;
-  transition:all 240ms cubic-bezier(.2,.9,.2,1);
+.hero-eyebrow::before{
+  content:'';
+  position:absolute;
+  left:0;
+  top:50%;
+  width:1.2rem;
+  height:2px;
+  background:linear-gradient(90deg, var(--accent-cyan), transparent);
 }
-.btn-primary { background:linear-gradient(90deg, rgba(0,240,255,0.12), rgba(255,107,53,0.12)); border-color:rgba(255,255,255,0.08); }
-.btn:hover { transform:translateY(-6px); box-shadow:0 20px 60px rgba(0,0,0,0.6) }
+
+.hero-subtitle{
+  font-size:clamp(2.5rem, 8vw, 7rem);
+  font-weight:900;
+  line-height:0.95;
+  letter-spacing:-0.03em;
+  margin-bottom:1.5rem;
+  background:linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  transform: translateZ(40px) rotateX(0.01deg);
+}
+
+.hero-subtitle .highlight{
+  background:linear-gradient(135deg, var(--accent-cyan), var(--accent-violet), var(--accent-amber));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  background-size:200% 200%;
+  animation: gradientShift 8s ease infinite;
+}
+
+@keyframes gradientShift{
+  0%, 100%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+}
+
+.hero-description{
+  font-size:clamp(1.1rem, 2vw, 1.4rem);
+  color:var(--text-secondary);
+  max-width:700px;
+  line-height:1.7;
+  margin-bottom:3rem;
+  transform: translateZ(30px) rotateX(0.01deg);
+}
+
+.hero-cta{
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+  transform: translateZ(20px) rotateX(0.01deg);
+}
+
+.btn{
+  padding:1rem 2rem;
+  border-radius:12px;
+  font-weight:600;
+  font-size:1rem;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:0.5rem;
+  transition:all 0.3s var(--transition-smooth);
+  cursor:pointer;
+  border:none;
+  position:relative;
+  overflow:hidden;
+}
+
+.btn::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));
+  opacity:0;
+  transition:opacity 0.3s ease;
+}
+
+.btn-primary{
+  background:linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));
+  color:var(--bg-deep);
+}
+
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 20px 40px rgba(0,229,255,0.3);
+}
+
+.btn-secondary{
+  background:var(--glass-medium);
+  color:var(--text-primary);
+  border:1px solid var(--border-subtle);
+  backdrop-filter:blur(10px);
+}
+
+.btn-secondary:hover{
+  background:var(--glass-subtle);
+  border-color:var(--accent-cyan);
+  transform:translateY(-2px);
+}
+
+/* Code Rain Canvas */
+#codeRain{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  opacity:0.15;
+  pointer-events:none;
+  mix-blend-mode:screen;
+}
+
+/* Morphing blob */
+.blob-wrap {
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%, -30%);
+  pointer-events:none;
+  z-index:2;
+  opacity:0.7;
+}
+
+.blob-wrap svg {
+  width:900px;
+  height:500px;
+  display:block;
+  transform:translate(-50%, -50%);
+}
 
 /* =========================================================
-   Code sample / Matrix rain small card (extra cinematic)
+   Scroll Indicator
    ========================================================= */
-.code-sample { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; font-size:.92rem; line-height:1.4; background:rgba(0,0,0,0.35); padding:18px; border-radius:12px; color:#bfefff; border:1px solid rgba(255,255,255,0.02); overflow:auto; max-height:360px; }
+.scroll-indicator{
+  position:absolute;
+  bottom:3rem;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:0.5rem;
+  opacity:0;
+  animation: fadeIn 1s ease 1.5s forwards, float 2s ease-in-out infinite 2s;
+}
+
+@keyframes fadeIn{
+  to{opacity:0.6}
+}
+
+@keyframes float{
+  0%, 100%{transform:translateX(-50%) translateY(0)}
+  50%{transform:translateX(-50%) translateY(10px)}
+}
+
+.scroll-indicator span{
+  font-size:0.75rem;
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  color:var(--text-tertiary);
+}
+
+.scroll-line{
+  width:1px;
+  height:40px;
+  background:linear-gradient(180deg, var(--accent-cyan), transparent);
+}
 
 /* =========================================================
-   Code-rain overlay for hero (canvas) styled separately in JS
+   Section Base Styles
    ========================================================= */
+.section{
+  padding:8rem 2rem;
+  position:relative;
+  z-index:2;
+}
+
+.section-header{
+  max-width:1200px;
+  margin:0 auto 4rem;
+  text-align:center;
+}
+
+.section-label{
+  font-size:0.85rem;
+  text-transform:uppercase;
+  letter-spacing:0.15em;
+  color:var(--accent-violet);
+  margin-bottom:1rem;
+  font-weight:600;
+}
+
+.section-title{
+  font-size:clamp(2rem, 5vw, 3.5rem);
+  font-weight:800;
+  line-height:1.1;
+  margin-bottom:1rem;
+}
+
+.section-description{
+  font-size:1.1rem;
+  color:var(--text-secondary);
+  max-width:600px;
+  margin:0 auto;
+  line-height:1.7;
+}
+
+/* =========================================================
+   Project Grid
+   ========================================================= */
+.project-grid{
+  max-width:1200px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(340px, 1fr));
+  gap:2rem;
+}
+
+.project-card{
+  background:var(--glass-subtle);
+  border:1px solid var(--border-subtle);
+  border-radius:20px;
+  overflow:hidden;
+  transition:all 0.5s var(--transition-smooth);
+  position:relative;
+  cursor:pointer;
+  opacity:0;
+  transform:translateY(40px);
+  transform-style:preserve-3d;
+}
+
+.project-card.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.project-card::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));
+  opacity:0;
+  transition:opacity 0.4s ease;
+  z-index:0;
+}
+
+.project-card:hover::before{
+  opacity:0.05;
+}
+
+.project-card:hover{
+  transform:translateY(-8px);
+  border-color:var(--accent-cyan);
+  box-shadow:0 30px 60px var(--shadow-hard);
+}
+
+.project-image{
+  width:100%;
+  height:240px;
+  background:linear-gradient(135deg, var(--bg-mid), var(--bg-dark));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+}
+
+.project-image::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg, rgba(0,229,255,0.1), rgba(168,85,247,0.1));
+  opacity:0;
+  transition:opacity 0.4s ease;
+}
+
+.project-card:hover .project-image::before{
+  opacity:1;
+}
+
+.project-icon{
+  font-size:3rem;
+  opacity:0.6;
+  transition:all 0.4s var(--transition-smooth);
+}
+
+.project-card:hover .project-icon{
+  transform:scale(1.1) rotate(5deg);
+  opacity:1;
+}
+
+.project-content{
+  padding:2rem;
+  position:relative;
+  z-index:1;
+}
+
+.project-title{
+  font-size:1.5rem;
+  font-weight:700;
+  margin-bottom:0.75rem;
+  color:var(--text-primary);
+}
+
+.project-description{
+  color:var(--text-secondary);
+  line-height:1.6;
+  margin-bottom:1.5rem;
+}
+
+.project-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.5rem;
+}
+
+.tag{
+  padding:0.4rem 0.9rem;
+  background:var(--glass-medium);
+  border-radius:20px;
+  font-size:0.8rem;
+  color:var(--text-secondary);
+  border:1px solid var(--border-subtle);
+  transition:all 0.3s ease;
+}
+
+.project-card:hover .tag{
+  background:var(--glass-subtle);
+  color:var(--accent-cyan);
+  border-color:var(--accent-cyan);
+}
+
+/* =========================================================
+   Skills Section
+   ========================================================= */
+.skills-container{
+  max-width:1000px;
+  margin:0 auto;
+}
+
+.skill-categories{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+  gap:2rem;
+}
+
+.skill-category{
+  padding:2.5rem;
+  background:var(--glass-subtle);
+  border:1px solid var(--border-subtle);
+  border-radius:20px;
+  transition:all 0.4s var(--transition-smooth);
+  opacity:0;
+  transform:translateY(30px);
+  transform-style:preserve-3d;
+}
+
+.skill-category.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.skill-category:hover{
+  background:var(--glass-medium);
+  border-color:var(--accent-violet);
+  transform:translateY(-4px);
+}
+
+.skill-category-icon{
+  font-size:2.5rem;
+  margin-bottom:1.5rem;
+  display:block;
+}
+
+.skill-category-title{
+  font-size:1.3rem;
+  font-weight:700;
+  margin-bottom:1rem;
+  color:var(--text-primary);
+}
+
+.skill-list{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:0.75rem;
+}
+
+.skill-list li{
+  color:var(--text-secondary);
+  padding-left:1.5rem;
+  position:relative;
+  font-size:0.95rem;
+}
+
+.skill-list li::before{
+  content:'→';
+  position:absolute;
+  left:0;
+  color:var(--accent-cyan);
+  font-weight:bold;
+}
+
+/* =========================================================
+   Contact Section
+   ========================================================= */
+.contact-container{
+  max-width:700px;
+  margin:0 auto;
+  text-align:center;
+}
+
+.contact-methods{
+  display:flex;
+  justify-content:center;
+  gap:2rem;
+  margin-top:3rem;
+  flex-wrap:wrap;
+}
+
+.contact-method{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:1rem;
+  padding:2rem;
+  background:var(--glass-subtle);
+  border:1px solid var(--border-subtle);
+  border-radius:16px;
+  min-width:200px;
+  transition:all 0.4s var(--transition-smooth);
+  text-decoration:none;
+  color:inherit;
+}
+
+.contact-method:hover{
+  background:var(--glass-medium);
+  border-color:var(--accent-cyan);
+  transform:translateY(-6px);
+  box-shadow:0 20px 40px var(--shadow-soft);
+}
+
+.contact-icon{
+  font-size:2rem;
+  width:60px;
+  height:60px;
+  border-radius:12px;
+  background:linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.contact-label{
+  font-size:0.9rem;
+  color:var(--text-tertiary);
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+}
+
+.contact-value{
+  font-size:1.1rem;
+  font-weight:600;
+  color:var(--text-primary);
+}
 
 /* =========================================================
    Footer
    ========================================================= */
-footer { padding:56px 20px; text-align:center; color:var(--muted); }
-
-/* =========================================================
-   Responsive tweaks
-   ========================================================= */
-@media (max-width:900px){
-  .card { padding:28px; border-radius:14px }
-  .title { font-size: clamp(2.2rem, 14vw, 5rem) }
-  .hero { padding:36px 16px }
+.footer{
+  padding:4rem 2rem 2rem;
+  text-align:center;
+  border-top:1px solid var(--border-subtle);
+  position:relative;
+  z-index:2;
 }
 
-/* minimal keyboard focus outlines */
-:is(a,button,input,textarea):focus { outline: 3px solid rgba(0,240,255,0.12); outline-offset:3px; border-radius:8px }
+.footer-content{
+  max-width:1200px;
+  margin:0 auto;
+}
+
+.footer-text{
+  color:var(--text-tertiary);
+  font-size:0.9rem;
+  margin-bottom:1rem;
+}
+
+.footer-links{
+  display:flex;
+  justify-content:center;
+  gap:2rem;
+  list-style:none;
+  margin-top:2rem;
+}
+
+.footer-links a{
+  color:var(--text-secondary);
+  text-decoration:none;
+  font-size:0.9rem;
+  transition:color 0.3s ease;
+}
+
+.footer-links a:hover{
+  color:var(--accent-cyan);
+}
+
+/* =========================================================
+   Responsive Design
+   ========================================================= */
+@media (max-width: 768px){
+  .nav-header{
+    padding:1rem 1.5rem;
+  }
+  
+  .nav-links{
+    gap:1.5rem;
+  }
+  
+  .nav-links a{
+    font-size:0.85rem;
+  }
+  
+  .hero-section{
+    padding:6rem 1.5rem 3rem;
+  }
+  
+  .section{
+    padding:5rem 1.5rem;
+  }
+  
+  .project-grid{
+    grid-template-columns:1fr;
+  }
+  
+  .skill-categories{
+    grid-template-columns:1fr;
+  }
+  
+  .contact-methods{
+    flex-direction:column;
+    align-items:center;
+  }
+  
+  .contact-method{
+    width:100%;
+    max-width:300px;
+  }
+  
+  .hero-cta{
+    flex-direction:column;
+  }
+  
+  .btn{
+    width:100%;
+    justify-content:center;
+  }
+}
+
+/* =========================================================
+   Loading Animation
+   ========================================================= */
+.loader{
+  position:fixed;
+  inset:0;
+  background:var(--bg-deep);
+  z-index:10001;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loader.hidden{
+  opacity:0;
+  visibility:hidden;
+}
+
+.loader-spinner{
+  width:60px;
+  height:60px;
+  border:3px solid var(--border-subtle);
+  border-top-color:var(--accent-cyan);
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+/* =========================================================
+   Particle Canvas
+   ========================================================= */
+#particleCanvas{
+  position:fixed;
+  inset:0;
+  z-index:9000;
+  pointer-events:none;
+}
+
+/* =========================================================
+   Code Sample
+   ========================================================= */
+.code-sample {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+  font-size:0.92rem;
+  line-height:1.4;
+  background:rgba(0,0,0,0.35);
+  padding:18px;
+  border-radius:12px;
+  color:#bfefff;
+  border:1px solid rgba(255,255,255,0.02);
+  overflow:auto;
+  max-height:360px;
+  margin:2rem 0;
+}
+
+/* =========================================================
+   Cinematic Divider
+   ========================================================= */
+.divider {
+  height:1px;
+  width:80%;
+  margin:20px auto;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+  border-radius:4px;
+}
+
+/* =========================================================
+   Skip to Content Link (Accessibility)
+   ========================================================= */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  background: var(--accent-cyan);
+  color: var(--bg-deep);
+  padding: 1rem 2rem;
+  text-decoration: none;
+  z-index: 10002;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  top: 0;
+}
 </style>
 </head>
 <body>
+
+<!-- Loading Screen -->
+<div class="loader" id="loader">
+  <div class="loader-spinner"></div>
+</div>
+
+<!-- Skip to main content (accessibility) -->
+<a href="#work" class="skip-link">Skip to main content</a>
 
 <!-- CINEMATIC OVERLAYS -->
 <div class="cinematic" aria-hidden="true">
@@ -200,28 +957,29 @@ footer { padding:56px 20px; text-align:center; color:var(--muted); }
   <div class="film-bars bottom"></div>
 </div>
 
-<!-- BOKEH / GLOW LAYERS -->
-<div class="bokeh" aria-hidden="true" id="bokehLayer"></div>
-
-<!-- HEADER CONTROLS -->
-<div class="header" role="navigation" aria-label="Controls">
-  <div class="brand"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><defs></defs><path d="M3 12h18M12 3v18" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-weight:700">ASHISH</span></div>
-  <button id="toggleSound" title="Toggle ambient sound (off by default)">Sound: Off</button>
-  <button id="toggleEffects" title="Toggle heavy effects">Effects: On</button>
-  <div class="small" aria-hidden="true">Ultra — Cinematic</div>
-</div>
+<!-- Navigation -->
+<nav class="nav-header">
+  <div class="nav-logo">
+    <div class="nav-logo-icon"></div>
+    <span>ASHISH</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
 
 <!-- Custom Cursor -->
-<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
-<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
 
 <!-- Hero Section -->
-<section class="section-hero" id="hero" aria-label="Hero">
-  <!-- Code rain canvas (behind) -->
-  <canvas id="codeRain" aria-hidden="true"></canvas>
-
-  <!-- Morph blob -->
-  <div class="blob-wrap" id="blobWrap" aria-hidden="true" style="left:50%; top:50%; position:absolute; transform:translate(-50%,-30%); pointer-events:none; z-index:2;">
+<section class="hero-section">
+  <canvas id="codeRain"></canvas>
+  
+  <!-- Morphing blob -->
+  <div class="blob-wrap" id="blobWrap" aria-hidden="true">
     <svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet">
       <defs>
         <filter id="goo">
@@ -235,52 +993,214 @@ footer { padding:56px 20px; text-align:center; color:var(--muted); }
       </g>
       <defs>
         <linearGradient id="blobGrad" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0%" stop-color="#00f0ff"/>
-          <stop offset="50%" stop-color="#9b5cff"/>
-          <stop offset="100%" stop-color="#ff6b35"/>
+          <stop offset="0%" stop-color="#00e5ff"/>
+          <stop offset="50%" stop-color="#a855f7"/>
+          <stop offset="100%" stop-color="#fbbf24"/>
         </linearGradient>
       </defs>
     </svg>
   </div>
-
-  <!-- Hero content (front) -->
-  <div class="hero-content" id="heroContent" role="region" aria-label="Introduction">
-    <h1 class="title" id="mainTitle">HI, I'M ASHISH.</h1>
-    <p class="subtitle">Creative developer — I build interactive, cinematic, and delightfully excessive web experiences.</p>
-
+  
+  <div class="hero-content">
+    <!-- Cinematic Title -->
+    <h1 class="hero-title" id="mainTitle">HI, I'M ASHISH.</h1>
+    
+    <div class="hero-eyebrow">Creative Engineer</div>
+    <h2 class="hero-subtitle">
+      Building <span class="highlight">Exceptional</span><br>Digital Experiences
+    </h2>
+    <p class="hero-description">
+      I craft meticulously detailed, performance-driven web applications that blur the line between design and engineering. Every pixel, animation, and interaction is intentional.
+    </p>
     <div class="hero-cta">
-      <button class="btn btn-primary" id="btnContact">Get In Touch</button>
-      <button class="btn" id="btnScroll">Explore</button>
+      <a href="#work" class="btn btn-primary">View My Work</a>
+      <a href="#contact" class="btn btn-secondary">Get In Touch</a>
     </div>
+  </div>
+  
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
   </div>
 </section>
 
-<!-- About Section -->
-<section class="section" id="about">
-  <div class="card" id="cardAbout" role="article" aria-labelledby="aboutTitle">
-    <div class="glow-border" id="glowAbout" aria-hidden="true"></div>
-    <h3 id="aboutTitle">About Me</h3>
-    <p>I obsess over motion, craft, and micro-interactions. I make websites feel like living objects — tactile, dramatic, and memorable.</p>
-    <div class="divider"></div>
-    <div class="skills-grid" id="skillsGrid">
-      <div class="skill">Web Development — React, Performance, SSR</div>
-      <div class="skill">Animation — CSS, WebGL, SVG</div>
-      <div class="skill">Design Systems — Accessible & Scalable</div>
-      <div class="skill">Tooling — Build pipelines, CI/CD</div>
-      <div class="skill">Creative Logic — Concept → Prototype → Product</div>
-      <div class="skill">Optimization — Lighthouse-forward</div>
-    </div>
-  </div>
-</section>
-
-<!-- Work / Code Sample -->
+<!-- Work Section -->
 <section class="section" id="work">
-  <div class="card" id="cardWork" role="region" aria-labelledby="workTitle">
-    <div class="glow-border" id="glowWork" aria-hidden="true"></div>
-    <h3 id="workTitle">Code & Craft</h3>
-    <p>Below is a live “code rain” behind the hero — but here’s a small snippet to show the kind of engineer I am.</p>
-    <div class="divider"></div>
-    <div class="code-sample" aria-live="polite">
+  <div class="section-header">
+    <div class="section-label">Portfolio</div>
+    <h2 class="section-title">Selected Work</h2>
+    <p class="section-description">
+      Each project represents a deep commitment to craft, performance, and user experience.
+    </p>
+  </div>
+  
+  <div class="project-grid">
+    <article class="project-card">
+      <div class="project-image">
+        <span class="project-icon">⚡</span>
+      </div>
+      <div class="project-content">
+        <h3 class="project-title">Real-time Analytics Platform</h3>
+        <p class="project-description">
+          High-performance dashboard processing millions of data points with sub-50ms render times. Custom WebGL visualizations.
+        </p>
+        <div class="project-tags">
+          <span class="tag">React</span>
+          <span class="tag">WebGL</span>
+          <span class="tag">TypeScript</span>
+        </div>
+      </div>
+    </article>
+    
+    <article class="project-card">
+      <div class="project-image">
+        <span class="project-icon">🎨</span>
+      </div>
+      <div class="project-content">
+        <h3 class="project-title">Design System Architecture</h3>
+        <p class="project-description">
+          Scalable component library serving 50+ engineers. Automated visual regression testing and comprehensive documentation.
+        </p>
+        <div class="project-tags">
+          <span class="tag">Design Systems</span>
+          <span class="tag">Storybook</span>
+          <span class="tag">Accessibility</span>
+        </div>
+      </div>
+    </article>
+    
+    <article class="project-card">
+      <div class="project-image">
+        <span class="project-icon">🚀</span>
+      </div>
+      <div class="project-content">
+        <h3 class="project-title">E-commerce Experience</h3>
+        <p class="project-description">
+          Award-winning shopping interface with micro-interactions, optimistic updates, and 99.9% Lighthouse scores across all metrics.
+        </p>
+        <div class="project-tags">
+          <span class="tag">Next.js</span>
+          <span class="tag">Performance</span>
+          <span class="tag">Animation</span>
+        </div>
+      </div>
+    </article>
+    
+    <article class="project-card">
+      <div class="project-image">
+        <span class="project-icon">🎯</span>
+      </div>
+      <div class="project-content">
+        <h3 class="project-title">Interactive Data Visualization</h3>
+        <p class="project-description">
+          Complex financial data made intuitive through custom D3.js charts, smooth transitions, and responsive design patterns.
+        </p>
+        <div class="project-tags">
+          <span class="tag">D3.js</span>
+          <span class="tag">Canvas API</span>
+          <span class="tag">UX Design</span>
+        </div>
+      </div>
+    </article>
+    
+    <article class="project-card">
+      <div class="project-image">
+        <span class="project-icon">🔧</span>
+      </div>
+      <div class="project-content">
+        <h3 class="project-title">Build Pipeline Optimization</h3>
+        <p class="project-description">
+          Reduced CI/CD pipeline time by 70% through custom tooling, aggressive code splitting, and intelligent caching strategies.
+        </p>
+        <div class="project-tags">
+          <span class="tag">DevOps</span>
+          <span class="tag">Webpack</span>
+          <span class="tag">Performance</span>
+        </div>
+      </div>
+    </article>
+    
+    <article class="project-card">
+      <div class="project-image">
+        <span class="project-icon">✨</span>
+      </div>
+      <div class="project-content">
+        <h3 class="project-title">Motion Design Framework</h3>
+        <p class="project-description">
+          Declarative animation library with physics-based spring curves, gesture recognition, and frame-perfect performance.
+        </p>
+        <div class="project-tags">
+          <span class="tag">Animation</span>
+          <span class="tag">Library</span>
+          <span class="tag">Open Source</span>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- Skills Section -->
+<section class="section" id="skills">
+  <div class="section-header">
+    <div class="section-label">Expertise</div>
+    <h2 class="section-title">Technical Proficiency</h2>
+    <p class="section-description">
+      Deep expertise across the full spectrum of modern web development, with a focus on performance and user experience.
+    </p>
+  </div>
+  
+  <div class="skills-container">
+    <div class="skill-categories">
+      <div class="skill-category">
+        <span class="skill-category-icon">⚙️</span>
+        <h3 class="skill-category-title">Engineering</h3>
+        <ul class="skill-list">
+          <li>React, Next.js, TypeScript</li>
+          <li>Performance optimization</li>
+          <li>WebGL, Canvas API</li>
+          <li>Server-side rendering</li>
+          <li>State management patterns</li>
+        </ul>
+      </div>
+      
+      <div class="skill-category">
+        <span class="skill-category-icon">🎨</span>
+        <h3 class="skill-category-title">Design & Motion</h3>
+        <ul class="skill-list">
+          <li>CSS animations & transitions</li>
+          <li>GSAP, Framer Motion</li>
+          <li>SVG manipulation</li>
+          <li>Micro-interactions</li>
+          <li>Design systems</li>
+        </ul>
+      </div>
+      
+      <div class="skill-category">
+        <span class="skill-category-icon">🔬</span>
+        <h3 class="skill-category-title">Architecture</h3>
+        <ul class="skill-list">
+          <li>Scalable component design</li>
+          <li>Build optimization</li>
+          <li>CI/CD pipelines</li>
+          <li>Testing strategies</li>
+          <li>Code splitting & lazy loading</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Code Sample Section -->
+<section class="section" id="code">
+  <div class="section-header">
+    <div class="section-label">Code & Craft</div>
+    <h2 class="section-title">Sample Implementation</h2>
+    <p class="section-description">
+      Below is a small snippet to show the kind of engineer I am.
+    </p>
+  </div>
+  
+  <div class="code-sample" aria-live="polite">
 <pre><code>// tiny reactive state example (vanilla)
 function createState(initial) {
   let value = initial;
@@ -290,47 +1210,69 @@ function createState(initial) {
     set: (v) => { value = v; subs.forEach(s => s(value)); },
     subscribe: (fn) => { subs.add(fn); return () => subs.delete(fn); }
   }
-}
-</code></pre>
-    </div>
-    <div class="cta-row">
-      <button class="btn btn-primary" id="btnDemo">Trigger Confetti</button>
-      <button class="btn" id="btnMore">More Tricks</button>
-    </div>
+}</code></pre>
   </div>
 </section>
 
-<!-- Contact / CTA -->
+<!-- Contact Section -->
 <section class="section" id="contact">
-  <div class="card" id="cardContact" role="region" aria-labelledby="contactTitle">
-    <div class="glow-border" id="glowContact" aria-hidden="true"></div>
-    <h3 id="contactTitle">Let's Build Something</h3>
-    <p>Want something cinematic or delightfully over-engineered? I love ambitious projects. Send a message, and let’s make it unforgettable.</p>
-    <div class="divider"></div>
-    <div style="display:flex; gap:12px; justify-content:center; align-items:center;">
-      <input id="email" type="email" placeholder="your@email.com" style="padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--fg);min-width:280px" />
-      <button class="btn btn-primary" id="sendBtn">Send</button>
+  <div class="section-header">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title">Let's Create Something Great</h2>
+    <p class="section-description">
+      Available for select freelance projects and full-time opportunities. Let's discuss how we can work together.
+    </p>
+  </div>
+  
+  <div class="contact-container">
+    <div class="contact-methods">
+      <a href="mailto:hello@ashish.dev" class="contact-method">
+        <div class="contact-icon">📧</div>
+        <span class="contact-label">Email</span>
+        <span class="contact-value">hello@ashish.dev</span>
+      </a>
+      
+      <a href="https://linkedin.com/in/ashish" class="contact-method" target="_blank" rel="noopener">
+        <div class="contact-icon">💼</div>
+        <span class="contact-label">LinkedIn</span>
+        <span class="contact-value">Connect</span>
+      </a>
+      
+      <a href="https://github.com/ashish" class="contact-method" target="_blank" rel="noopener">
+        <div class="contact-icon">💻</div>
+        <span class="contact-label">GitHub</span>
+        <span class="contact-value">@ashish</span>
+      </a>
     </div>
   </div>
 </section>
 
 <!-- Footer -->
-<footer role="contentinfo">© 2025 Ashish — All handcrafted with obsessive detail.</footer>
+<footer class="footer">
+  <div class="footer-content">
+    <p class="footer-text">
+      © 2025 Ashish. Crafted with precision and obsessive attention to detail.
+    </p>
+    <ul class="footer-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</footer>
 
-<!-- Particle container (top-level) -->
-<canvas id="particleCanvas" style="position:fixed; inset:0; z-index:9000; pointer-events:none;"></canvas>
+<!-- Particle Canvas -->
+<canvas id="particleCanvas"></canvas>
 
 <script>
 /* =========================================================
-   CONFIG / FEATURE FLAGS
-   Toggle here to disable heavy effects for debugging or performance.
+   Configuration
    ========================================================= */
 const CONFIG = {
-  ENABLE_EFFECTS: true,            // master switch
-  ENABLE_SOUND: false,             // start muted; toggle via UI
+  ENABLE_CODE_RAIN: true,
+  ENABLE_CURSOR: !('ontouchstart' in window),
   ENABLE_PARTICLES: true,
   ENABLE_BLOBS: true,
-  ENABLE_CODE_RAIN: true,
   MAX_PARTICLES: 500,
   PREFERS_REDUCED_MOTION: window.matchMedia('(prefers-reduced-motion: reduce)').matches
 };
@@ -338,259 +1280,196 @@ const CONFIG = {
 /* =========================================================
    Utilities
    ========================================================= */
-const $ = (sel, root=document) => root.querySelector(sel);
-const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-const lerp = (a,b,t) => a + (b-a)*t;
+const qs = (sel) => document.querySelector(sel);
+const qsa = (sel) => Array.from(document.querySelectorAll(sel));
+const lerp = (a, b, t) => a + (b - a) * t;
+const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
 const rand = (a,b=0) => (Math.random()*(a-b))+b;
 
 /* =========================================================
-   Cursor: dot + ring + interactions
+   Loading Screen
    ========================================================= */
-(function initCursor(){
-  const cursor = $('#cursorDot'), ring = $('#cursorRing');
-  if(!cursor || CONFIG.PREFERS_REDUCED_MOTION) { if(cursor) cursor.style.display='none'; if(ring) ring.style.display='none'; return; }
-  let mx = innerWidth/2, my = innerHeight/2;
-  let ringX = mx, ringY = my;
-  let visible = true;
-  const ease = 0.18;
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    qs('#loader').classList.add('hidden');
+  }, 800);
+});
 
-  function loop(){
-    ringX += (mx - ringX) * ease;
-    ringY += (my - ringY) * ease;
-    ring.style.left = ringX + 'px';
-    ring.style.top = ringY + 'px';
-    requestAnimationFrame(loop);
+/* =========================================================
+   Custom Cursor
+   ========================================================= */
+if (CONFIG.ENABLE_CURSOR && !CONFIG.PREFERS_REDUCED_MOTION) {
+  const cursorDot = qs('.cursor-dot');
+  const cursorRing = qs('.cursor-ring');
+  
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let ringX = mouseX;
+  let ringY = mouseY;
+  
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    
+    cursorDot.style.left = mouseX + 'px';
+    cursorDot.style.top = mouseY + 'px';
+  });
+  
+  function animateRing() {
+    ringX = lerp(ringX, mouseX, 0.15);
+    ringY = lerp(ringY, mouseY, 0.15);
+    
+    cursorRing.style.left = ringX + 'px';
+    cursorRing.style.top = ringY + 'px';
+    
+    requestAnimationFrame(animateRing);
   }
-  loop();
-
-  document.addEventListener('mousemove', (e)=>{
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = e.clientX+'px'; cursor.style.top = e.clientY+'px';
-    ring.style.left = e.clientX+'px'; ring.style.top = e.clientY+'px';
-    if(!visible){ cursor.style.opacity=1; ring.style.opacity=1; visible=true; }
-  }, {passive:true});
-
-  // expand on hover of interactives
-  const hoverables = ['.btn', 'button', 'a', 'input', '.skill'];
-  function addHoverHandlers(sel){
-    $$(sel).forEach(el=>{
-      el.addEventListener('mouseenter', ()=> { cursor.classList.add('expand'); ring.classList.remove('hidden'); });
-      el.addEventListener('mouseleave', ()=> { cursor.classList.remove('expand'); });
+  animateRing();
+  
+  // Hover effects
+  const hoverElements = qsa('a, button, .project-card, .skill-category, .contact-method');
+  hoverElements.forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursorDot.classList.add('hover');
+      cursorRing.classList.add('hover');
     });
-  }
-  hoverables.forEach(addHoverHandlers);
-
-  // ring hide/show on blur
-  window.addEventListener('blur', ()=> { cursor.style.opacity=0; ring.style.opacity=0; visible=false; });
-  window.addEventListener('focus', ()=> { cursor.style.opacity=1; ring.style.opacity=1; visible=true; });
-
-  // ripple on click
-  document.addEventListener('click', (e)=>{
+    el.addEventListener('mouseleave', () => {
+      cursorDot.classList.remove('hover');
+      cursorRing.classList.remove('hover');
+    });
+  });
+  
+  // Ripple effect on click
+  document.addEventListener('click', (e) => {
     const el = document.createElement('div');
-    el.style.position='fixed';
-    el.style.left = e.clientX+'px';
-    el.style.top = e.clientY+'px';
+    el.style.position = 'fixed';
+    el.style.left = e.clientX + 'px';
+    el.style.top = e.clientY + 'px';
     el.style.width = el.style.height = '10px';
     el.style.border = '2px solid rgba(255,255,255,0.14)';
-    el.style.borderRadius='50%';
-    el.style.pointerEvents='none';
-    el.style.transform='translate(-50%,-50%)';
+    el.style.borderRadius = '50%';
+    el.style.pointerEvents = 'none';
+    el.style.transform = 'translate(-50%,-50%)';
     el.style.zIndex = 99999;
     el.style.transition = 'transform 650ms cubic-bezier(.2,.9,.2,1), opacity 650ms';
     document.body.appendChild(el);
-    requestAnimationFrame(()=> {
+    requestAnimationFrame(() => {
       el.style.transform = 'translate(-50%,-50%) scale(12)';
       el.style.opacity = '0';
     });
-    setTimeout(()=> el.remove(), 750);
-  }, {passive:true});
-})();
+    setTimeout(() => el.remove(), 750);
+  }, {passive: true});
+} else {
+  qs('.cursor-dot').style.display = 'none';
+  qs('.cursor-ring').style.display = 'none';
+}
 
 /* =========================================================
-   Cinematic bokeh / glows (generated DOM) - subtle, cheap
+   Code Rain Canvas
    ========================================================= */
-(function initBokeh(){
-  if(!CONFIG.ENABLE_EFFECTS) return;
-  const container = document.getElementById('bokehLayer');
-  if(!container) return;
-  const count = 10;
-  for(let i=0;i<count;i++){
-    const el = document.createElement('div');
-    el.style.position='absolute';
-    el.style.left = Math.random()*100 + 'vw';
-    el.style.top  = Math.random()*100 + 'vh';
-    const size = 60 + Math.random()*260;
-    el.style.width = el.style.height = size + 'px';
-    el.style.borderRadius = '50%';
-    el.style.background = Math.random()>0.5 ? 'rgba(0,240,255,0.035)' : 'rgba(255,107,53,0.03)';
-    el.style.filter = 'blur(36px)';
-    el.style.opacity = 0.6;
-    el.style.transform = `translate(-50%,-50%)`;
-    container.appendChild(el);
-  }
-})();
-
-/* =========================================================
-   Morphing blob (SVG path morph)
-   ========================================================= */
-(function initBlob(){
-  if(!CONFIG.ENABLE_EFFECTS || !CONFIG.ENABLE_BLOBS || CONFIG.PREFERS_REDUCED_MOTION) return;
-  const path = document.getElementById('blobPath');
-  if(!path) return;
-  // Several random blob path presets (closed path)
-  const presets = [
-    "M416.7,37.6C482.2,54.8,539.2,103.8,569.6,162.6C601.6,223.1,608.6,292.4,573.1,341.1C537.6,389.8,459.6,417,392.5,435.9C325.3,454.8,269,465.6,217.6,437.9C166.1,410.1,119.5,344,103.8,281.4C88.1,218.8,103.3,160.6,141.6,120.9C179.8,81.2,240.9,60.1,302.8,46.8C364.7,33.5,350.9,20.4,416.7,37.6Z",
-    "M441.8,24.7C500.1,42.1,552.6,86.2,576.9,138.2C603.9,196.5,592.9,262.8,560.0,311.8C527.1,360.9,472.1,382.9,415.7,405.6C359.3,428.4,300.5,451.9,245.8,432.9C191.2,413.9,140.5,352.4,120.9,296.8C101.3,241.2,112.8,191.4,140.3,149.6C167.9,107.9,211.7,73.3,266.7,53.0C321.8,32.7,383.5,7.3,441.8,24.7Z",
-    "M449.6,34.0C487.9,57.1,520.4,96.0,535.1,143.3C550.8,193.7,544.8,252.4,512.3,295.0C480.2,337.2,422.6,362.5,366.1,391.0C309.6,419.6,255.5,451.4,199.7,431.2C144.0,411.1,86.6,339.9,84.9,285.4C83.2,230.9,137.0,192.2,173.0,151.9C209.1,111.7,227.0,63.1,272.4,45.4C317.7,27.7,411.4,10.9,449.6,34.0Z"
-  ];
-  // pick a random one and animate morphs
-  let idx = 0;
-  const dur = 6000;
-  function morph(){
-    const next = presets[(idx+1)%presets.length];
-    const start = path.getAttribute('d') || presets[0];
-    if(!start) path.setAttribute('d', presets[0]);
-    // use simple interpolation via SVG animateElement is not universally supported; we'll implement via custom stepper
-    const startTime = performance.now();
-    function step(now){
-      const t = Math.min(1, (now - startTime)/dur);
-      // naive crossfade between two SVG path strings by swapping at mid-point (acceptable)
-      if(t < 0.5) {
-        path.setAttribute('d', start);
-      } else {
-        path.setAttribute('d', next);
-      }
-      if(t < 1) requestAnimationFrame(step)
-      else { idx = (idx+1) % presets.length; setTimeout(morph, 1200 + Math.random()*1400); }
-    }
-    requestAnimationFrame(step);
-  }
-  path.setAttribute('d', presets[0]);
-  setTimeout(morph, 900);
-})();
-
-/* =========================================================
-   Code Rain (Matrix-like) — Canvas-based, optimized
-   ========================================================= */
-(function initCodeRain(){
-  if(!CONFIG.ENABLE_EFFECTS || !CONFIG.ENABLE_CODE_RAIN || CONFIG.PREFERS_REDUCED_MOTION) return;
-  const canvas = document.getElementById('codeRain');
+if (CONFIG.ENABLE_CODE_RAIN && !CONFIG.PREFERS_REDUCED_MOTION) {
+  const canvas = qs('#codeRain');
   const ctx = canvas.getContext('2d');
-  let width = canvas.width = innerWidth;
-  let height = canvas.height = innerHeight;
-  const cols = Math.floor(width / 16);
-  const yPositions = new Array(cols).fill(0);
-
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789<>/{}[]()@#$%^&*~`+=";
-  function draw(){
-    if(!CONFIG.ENABLE_CODE_RAIN) return;
-    ctx.fillStyle = 'rgba(0,0,0,0.12)';
-    ctx.fillRect(0,0,width,height);
-    ctx.font = '12px monospace';
-    for(let i=0;i<cols;i++){
-      const text = chars.charAt(Math.floor(Math.random() * chars.length));
-      const x = i * 16;
-      ctx.fillStyle = i%6 === 0 ? 'rgba(255,255,255,0.82)' : 'rgba(0,240,255,0.18)';
-      ctx.fillText(text, x, yPositions[i]*16);
-      yPositions[i]++;
-      if(yPositions[i]*16 > height && Math.random() > 0.975) yPositions[i] = 0;
-    }
-    requestAnimationFrame(draw);
-  }
-
-  window.addEventListener('resize', ()=>{
-    width = canvas.width = innerWidth;
-    height = canvas.height = innerHeight;
-  }, {passive:true});
-
-  draw();
-})();
-
-/* =========================================================
-   Scroll reveal + scroll-synced glowing borders
-   ========================================================= */
-(function initScrollReveal(){
-  const cards = $$('.card');
-  const observer = new IntersectionObserver((entries)=>{
-    entries.forEach(ent=>{
-      if(ent.isIntersecting) {
-        ent.target.classList.add('visible');
-        // shrink glow border animation
-        const glow = ent.target.querySelector('.glow-border');
-        if(glow) glow.style.opacity = 1;
-        observer.unobserve(ent.target);
+  
+  let width = canvas.width = window.innerWidth;
+  let height = canvas.height = window.innerHeight;
+  
+  const fontSize = 14;
+  const columns = Math.floor(width / fontSize);
+  const drops = Array(columns).fill(0);
+  
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*(){}[]<>/~';
+  
+  function draw() {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+    ctx.fillRect(0, 0, width, height);
+    
+    ctx.font = fontSize + 'px monospace';
+    
+    for (let i = 0; i < drops.length; i++) {
+      const char = chars[Math.floor(Math.random() * chars.length)];
+      const x = i * fontSize;
+      const y = drops[i] * fontSize;
+      
+      // Gradient effect - some columns brighter
+      if (i % 7 === 0) {
+        ctx.fillStyle = 'rgba(0, 229, 255, 0.5)';
+      } else if (i % 5 === 0) {
+        ctx.fillStyle = 'rgba(168, 85, 247, 0.3)';
+      } else {
+        ctx.fillStyle = 'rgba(0, 229, 255, 0.15)';
       }
-    });
-  }, {threshold: 0.18});
-  cards.forEach(c => observer.observe(c));
-
-  // scroll-synced border intensity based on viewport center
-  function onScroll(){
-    const mid = innerHeight/2;
-    cards.forEach(card=>{
-      const rect = card.getBoundingClientRect();
-      const dist = Math.abs(rect.top + rect.height/2 - mid);
-      const t = clamp(1 - (dist / (innerHeight/1.8)), 0, 1);
-      const glow = card.querySelector('.glow-border');
-      if(glow) {
-        glow.style.transform = `scale(${lerp(0.98,1.02,t)})`;
-        glow.style.opacity = (0.04 + t*0.9);
+      
+      ctx.fillText(char, x, y);
+      
+      drops[i]++;
+      
+      if (y > height && Math.random() > 0.975) {
+        drops[i] = 0;
       }
-    });
-  }
-  if(!CONFIG.PREFERS_REDUCED_MOTION) {
-    window.addEventListener('scroll', throttle(onScroll, 60), {passive:true});
-    onScroll();
-  }
-
-  // simple throttle
-  function throttle(fn, wait){
-    let last = 0;
-    return (...args) => {
-      const now = Date.now();
-      if(now - last > wait){ last = now; fn(...args); }
     }
   }
-})();
-
-/* =========================================================
-   3D tilt / parallax on hero + cards (mouse move)
-   ========================================================= */
-(function initTilt(){
-  if(CONFIG.PREFERS_REDUCED_MOTION) return;
-  const hero = $('#heroContent');
-  const cardEls = $$('.card');
-  const bound = $('#hero');
-  function applyTilt(el, e, intensity=0.015, maxRot=12){
-    const rect = el.getBoundingClientRect();
-    const cx = rect.left + rect.width/2;
-    const cy = rect.top + rect.height/2;
-    const dx = e.clientX - cx;
-    const dy = e.clientY - cy;
-    const rx = clamp((dy / rect.height) * maxRot * -1, -maxRot, maxRot);
-    const ry = clamp((dx / rect.width) * maxRot, -maxRot, maxRot);
-    el.style.transform = `translateZ(20px) rotateX(${rx}deg) rotateY(${ry}deg)`;
-    el.style.transition = 'transform 220ms cubic-bezier(.2,.9,.2,1)';
-  }
-  if(hero){
-    bound.addEventListener('mousemove', (e) => {
-      applyTilt(hero, e, 0.02, 10);
-    }, {passive:true});
-    bound.addEventListener('mouseleave', ()=> hero.style.transform = '');
-  }
-  cardEls.forEach(card=>{
-    card.addEventListener('mousemove', (e)=> applyTilt(card, e, 0.02, 6), {passive:true});
-    card.addEventListener('mouseleave', ()=> card.style.transform = '');
+  
+  setInterval(draw, 50);
+  
+  window.addEventListener('resize', () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
   });
-})();
+}
 
 /* =========================================================
-   Particle / confetti system using canvas
+   Morphing Blob
    ========================================================= */
-(function initParticles(){
-  if(!CONFIG.ENABLE_EFFECTS || !CONFIG.ENABLE_PARTICLES) return;
-  const canvas = document.getElementById('particleCanvas');
+if (CONFIG.ENABLE_BLOBS && !CONFIG.PREFERS_REDUCED_MOTION) {
+  const path = qs('#blobPath');
+  if (path) {
+    // Several random blob path presets (closed path)
+    const presets = [
+      "M416.7,37.6C482.2,54.8,539.2,103.8,569.6,162.6C601.6,223.1,608.6,292.4,573.1,341.1C537.6,389.8,459.6,417,392.5,435.9C325.3,454.8,269,465.6,217.6,437.9C166.1,410.1,119.5,344,103.8,281.4C88.1,218.8,103.3,160.6,141.6,120.9C179.8,81.2,240.9,60.1,302.8,46.8C364.7,33.5,350.9,20.4,416.7,37.6Z",
+      "M441.8,24.7C500.1,42.1,552.6,86.2,576.9,138.2C603.9,196.5,592.9,262.8,560.0,311.8C527.1,360.9,472.1,382.9,415.7,405.6C359.3,428.4,300.5,451.9,245.8,432.9C191.2,413.9,140.5,352.4,120.9,296.8C101.3,241.2,112.8,191.4,140.3,149.6C167.9,107.9,211.7,73.3,266.7,53.0C321.8,32.7,383.5,7.3,441.8,24.7Z",
+      "M449.6,34.0C487.9,57.1,520.4,96.0,535.1,143.3C550.8,193.7,544.8,252.4,512.3,295.0C480.2,337.2,422.6,362.5,366.1,391.0C309.6,419.6,255.5,451.4,199.7,431.2C144.0,411.1,86.6,339.9,84.9,285.4C83.2,230.9,137.0,192.2,173.0,151.9C209.1,111.7,227.0,63.1,272.4,45.4C317.7,27.7,411.4,10.9,449.6,34.0Z"
+    ];
+    
+    // pick a random one and animate morphs
+    let idx = 0;
+    const dur = 6000;
+    
+    function morph() {
+      const next = presets[(idx + 1) % presets.length];
+      const start = path.getAttribute('d') || presets[0];
+      if (!start) path.setAttribute('d', presets[0]);
+      
+      // use simple interpolation via SVG animateElement is not universally supported; we'll implement via custom stepper
+      const startTime = performance.now();
+      
+      function step(now) {
+        const t = Math.min(1, (now - startTime) / dur);
+        // naive crossfade between two SVG path strings by swapping at mid-point (acceptable)
+        if (t < 0.5) {
+          path.setAttribute('d', start);
+        } else {
+          path.setAttribute('d', next);
+        }
+        if (t < 1) requestAnimationFrame(step)
+        else {
+          idx = (idx + 1) % presets.length;
+          setTimeout(morph, 1200 + Math.random() * 1400);
+        }
+      }
+      requestAnimationFrame(step);
+    }
+    
+    path.setAttribute('d', presets[0]);
+    setTimeout(morph, 900);
+  }
+}
+
+/* =========================================================
+   Particle System
+   ========================================================= */
+if (CONFIG.ENABLE_PARTICLES && !CONFIG.PREFERS_REDUCED_MOTION) {
+  const canvas = qs('#particleCanvas');
   const ctx = canvas.getContext('2d');
   let w = canvas.width = innerWidth;
   let h = canvas.height = innerHeight;
@@ -598,37 +1477,37 @@ const rand = (a,b=0) => (Math.random()*(a-b))+b;
   const max = CONFIG.MAX_PARTICLES;
 
   // utility: create single particle
-  function createParticle(x,y,opts={}){
+  function createParticle(x, y, opts = {}) {
     return {
-      x:x, y:y,
-      vx: (Math.random()-0.5)* (opts.spread||18),
-      vy: (Math.random()-0.8)*(opts.force||12),
-      life: 80 + Math.random()*80,
-      age:0,
-      size: 4 + Math.random()*8,
-      color: opts.color || (Math.random()>0.5 ? 'rgba(0,240,255,0.95)' : 'rgba(255,107,53,0.95)'),
-      gravity: 0.38 + Math.random()*0.2,
+      x: x, y: y,
+      vx: (Math.random() - 0.5) * (opts.spread || 18),
+      vy: (Math.random() - 0.8) * (opts.force || 12),
+      life: 80 + Math.random() * 80,
+      age: 0,
+      size: 4 + Math.random() * 8,
+      color: opts.color || (Math.random() > 0.5 ? 'rgba(0,229,255,0.95)' : 'rgba(255,107,53,0.95)'),
+      gravity: 0.38 + Math.random() * 0.2,
       drag: 0.995,
-      rotate: Math.random()*360
+      rotate: Math.random() * 360
     };
   }
 
-  function emit(x,y,count=24,opts={}){
-    for(let i=0;i<count;i++){
-      if(particles.length < max) particles.push(createParticle(x,y, opts));
+  function emit(x, y, count = 24, opts = {}) {
+    for (let i = 0; i < count; i++) {
+      if (particles.length < max) particles.push(createParticle(x, y, opts));
     }
   }
 
-  function resize(){ w=canvas.width=innerWidth; h=canvas.height=innerHeight; }
-  window.addEventListener('resize', resize, {passive:true});
+  function resize() { w = canvas.width = innerWidth; h = canvas.height = innerHeight; }
+  window.addEventListener('resize', resize, { passive: true });
 
-  function step(){
-    ctx.clearRect(0,0,w,h);
+  function step() {
+    ctx.clearRect(0, 0, w, h);
     // draw and update
-    for(let i=particles.length-1;i>=0;i--){
+    for (let i = particles.length - 1; i >= 0; i--) {
       const p = particles[i];
       p.vx *= p.drag; p.vy *= p.drag;
-      p.vy += p.gravity*0.12;
+      p.vy += p.gravity * 0.12;
       p.x += p.vx; p.y += p.vy;
       p.age++;
       const lifeRatio = 1 - p.age / p.life;
@@ -637,9 +1516,9 @@ const rand = (a,b=0) => (Math.random()*(a-b))+b;
       ctx.translate(p.x, p.y);
       ctx.rotate(p.rotate * Math.PI / 180);
       ctx.fillStyle = p.color;
-      ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+      ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
       ctx.restore();
-      if(p.age > p.life || p.y > h + 200) particles.splice(i,1);
+      if (p.age > p.life || p.y > h + 200) particles.splice(i, 1);
     }
     requestAnimationFrame(step);
   }
@@ -649,142 +1528,238 @@ const rand = (a,b=0) => (Math.random()*(a-b))+b;
   window.__emitParticles = emit;
 
   // Example: emit when someone clicks primary CTA
-  $('#btnContact')?.addEventListener('click', (e)=>{
+  qs('.btn-primary')?.addEventListener('click', (e) => {
     const rect = e.target.getBoundingClientRect();
-    emit(rect.left + rect.width/2, rect.top + rect.height/2, 40, {force:14});
+    emit(rect.left + rect.width / 2, rect.top + rect.height / 2, 40, { force: 14 });
   });
-
-  $('#btnDemo')?.addEventListener('click', (e)=>{
-    const rect = e.target.getBoundingClientRect();
-    emit(rect.left + rect.width/2, rect.top + rect.height/2, 120, {force:18});
-  });
-
-  $('#sendBtn')?.addEventListener('click', (e)=>{
-    emit(innerWidth/2, innerHeight/2, 100, {force:20});
-    alert('Pretend email sent — more backend hooks can be added.');
-  });
-
-})();
+}
 
 /* =========================================================
-   Simple ambient WebAudio (procedural pad) — togglable
-   Note: respects autoplay policies; user must interact to enable sound.
+   Scroll Reveal Animations
    ========================================================= */
-(function initAudio(){
-  if(!CONFIG.ENABLE_SOUND) return;
-  let ctx, gain, osc1, osc2;
-  const btn = $('#toggleSound');
-  let playing = false;
+const observerOptions = {
+  threshold: 0.1,
+  rootMargin: '0px 0px -100px 0px'
+};
 
-  async function startSound(){
-    if(playing) return;
-    try{
-      ctx = new (window.AudioContext || window.webkitAudioContext)();
-      gain = ctx.createGain(); gain.gain.value = 0.02;
-      osc1 = ctx.createOscillator(); osc2 = ctx.createOscillator();
-      osc1.type = 'sine'; osc2.type = 'sine';
-      osc1.frequency.value = 110;
-      osc2.frequency.value = 174.61;
-      // gentle detune + amplitude modulation
-      osc1.detune.value = -20; osc2.detune.value=20;
-      const lfo = ctx.createOscillator(); const lfoGain = ctx.createGain();
-      lfo.frequency.value = 0.05; lfoGain.gain.value = 0.02;
-      lfo.connect(lfoGain); lfoGain.connect(gain.gain);
-      osc1.connect(gain); osc2.connect(gain); gain.connect(ctx.destination);
-      osc1.start(); osc2.start(); lfo.start();
-      playing = true; btn.textContent = 'Sound: On';
-    }catch(e){ console.warn('Sound init failed', e); }
-  }
-  function stopSound(){
-    if(!playing) return;
-    osc1.stop(); osc2.stop();
-    ctx.close();
-    playing=false; btn.textContent = 'Sound: Off';
-  }
-  btn.addEventListener('click', ()=>{
-    if(!playing) startSound(); else stopSound();
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, index) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => {
+        entry.target.classList.add('visible');
+      }, index * 100);
+      observer.unobserve(entry.target);
+    }
   });
-})();
+}, observerOptions);
+
+// Observe project cards
+qsa('.project-card').forEach(card => observer.observe(card));
+
+// Observe skill categories
+qsa('.skill-category').forEach(category => observer.observe(category));
 
 /* =========================================================
-   Scroll-triggered confetti bursts & fun triggers
+   Smooth Scroll
    ========================================================= */
-(function initScrollTriggers(){
-  const skillSection = $('#about');
-  if(!skillSection) return;
-  const observer = new IntersectionObserver((entries)=>{
+qsa('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = qs(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  });
+});
+
+/* =========================================================
+   Parallax Effect on Scroll
+   ========================================================= */
+if (!CONFIG.PREFERS_REDUCED_MOTION) {
+  let ticking = false;
+  
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const scrolled = window.pageYOffset;
+        
+        // Parallax hero content
+        const heroContent = qs('.hero-content');
+        if (heroContent) {
+          heroContent.style.transform = `translateY(${scrolled * 0.3}px)`;
+          heroContent.style.opacity = 1 - scrolled / 600;
+        }
+        
+        // Parallax code rain
+        const codeRain = qs('#codeRain');
+        if (codeRain) {
+          codeRain.style.transform = `translateY(${scrolled * 0.5}px)`;
+        }
+        
+        ticking = false;
+      });
+      
+      ticking = true;
+    }
+  });
+}
+
+/* =========================================================
+   3D Tilt Effect on Cards
+   ========================================================= */
+if (!CONFIG.PREFERS_REDUCED_MOTION) {
+  qsa('.project-card, .skill-category').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = (y - centerY) / 20;
+      const rotateY = (centerX - x) / 20;
+      
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+}
+
+/* =========================================================
+   Navigation Active State
+   ========================================================= */
+const sections = qsa('section[id]');
+const navLinks = qsa('.nav-links a');
+
+function updateActiveNav() {
+  const scrollPos = window.scrollY + 200;
+  
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop;
+    const sectionHeight = section.offsetHeight;
+    const sectionId = section.getAttribute('id');
+    
+    if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+      navLinks.forEach(link => {
+        link.style.color = link.getAttribute('href') === `#${sectionId}` 
+          ? 'var(--text-primary)' 
+          : 'var(--text-secondary)';
+      });
+    }
+  });
+}
+
+window.addEventListener('scroll', updateActiveNav);
+updateActiveNav();
+
+/* =========================================================
+   Easter Egg: Keyboard Shortcuts
+   ========================================================= */
+let konami = [];
+const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+
+document.addEventListener('keydown', (e) => {
+  konami.push(e.key);
+  konami = konami.slice(-10);
+  
+  if (konami.join('') === konamiCode.join('')) {
+    document.body.style.animation = 'rainbow 2s linear infinite';
+    setTimeout(() => {
+      document.body.style.animation = '';
+    }, 5000);
+  }
+});
+
+// Add rainbow animation
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes rainbow {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+  }
+`;
+document.head.appendChild(style);
+
+/* =========================================================
+   Performance Monitoring
+   ========================================================= */
+if (window.performance && window.performance.timing) {
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const perfData = window.performance.timing;
+      const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+      console.log(`⚡ Page loaded in ${pageLoadTime}ms`);
+    }, 0);
+  });
+}
+
+/* =========================================================
+   Scroll-triggered confetti bursts
+   ========================================================= */
+(function initScrollTriggers() {
+  const skillsSection = qs('#skills');
+  if (!skillsSection) return;
+  
+  const observer = new IntersectionObserver((entries) => {
     entries.forEach(ent => {
-      if(ent.isIntersecting){
+      if (ent.isIntersecting) {
         // burst confetti at center
         const rect = ent.target.getBoundingClientRect();
-        const cx = rect.left + rect.width/2;
-        const cy = rect.top + rect.height/3;
-        if(window.__emitParticles) window.__emitParticles(cx, cy, 120, {force:18});
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 3;
+        if (window.__emitParticles) window.__emitParticles(cx, cy, 120, { force: 18 });
         observer.unobserve(ent.target);
       }
     });
-  }, {threshold:0.35});
-  observer.observe(skillSection);
+  }, { threshold: 0.35 });
+  observer.observe(skillsSection);
 })();
 
 /* =========================================================
-   Buttons / interactions / extras
+   Keyboard shortcut: press "K" to trigger confetti
    ========================================================= */
-(function interactions(){
-  // explore button: smooth scroll to about
-  $('#btnScroll')?.addEventListener('click', ()=> document.getElementById('about').scrollIntoView({behavior:'smooth'}));
-
-  $('#toggleEffects')?.addEventListener('click', (e)=>{
-    CONFIG.ENABLE_EFFECTS = !CONFIG.ENABLE_EFFECTS;
-    e.target.textContent = 'Effects: ' + (CONFIG.ENABLE_EFFECTS ? 'On' : 'Off');
-    // subtle page feedback
-    document.body.style.transition = 'background .6s linear';
-    document.body.style.backgroundImage = CONFIG.ENABLE_EFFECTS
-      ? "radial-gradient(circle at 20% 20%, rgba(0,240,255,0.03), transparent 8%), radial-gradient(900px 500px at 90% 85%, rgba(255,107,53,0.03), transparent 10%), linear-gradient(180deg, var(--bg-1), var(--bg-0))"
-      : "linear-gradient(180deg, #070707, #030303)";
-  });
-
-  // demo trigger: more tricks
-  $('#btnMore')?.addEventListener('click', ()=>{
-    // big center emitter + title jitter
-    if(window.__emitParticles) window.__emitParticles(innerWidth/2, innerHeight/2, 360, {force:28});
-    const title = $('#mainTitle');
-    title.animate([{transform:'translateY(0)'},{transform:'translateY(-8px)'},{transform:'translateY(0)'}], {duration:700, easing:'cubic-bezier(.2,.9,.2,1)'});
-  });
-
-  // simple keyboard shortcut: press "K" to trigger confetti
-  window.addEventListener('keydown', (e)=>{
-    if(e.key.toLowerCase() === 'k') {
-      if(window.__emitParticles) window.__emitParticles(innerWidth/2, innerHeight/2, 220, {force:20});
-    }
-  });
-})();
-
-/* =========================================================
-   Accessibility & reduced-motion friendly cleanup
-   ========================================================= */
-(function accessibility(){
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-    // remove or tone down heavy visuals
-    const canvases = $$('canvas');
-    canvases.forEach(c=> c.style.display='none');
-    const bokeh = document.getElementById('bokehLayer');
-    if(bokeh) bokeh.style.display='none';
-    const particles = document.getElementById('particleCanvas');
-    if(particles) particles.style.display='none';
+window.addEventListener('keydown', (e) => {
+  if (e.key.toLowerCase() === 'k') {
+    if (window.__emitParticles) window.__emitParticles(innerWidth / 2, innerHeight / 2, 220, { force: 20 });
   }
-})();
+});
 
 /* =========================================================
-   Performance: gentle housekeeping
+   Cinematic Title Animation
    ========================================================= */
-(function housekeeping(){
-  // reduce intervals if page invisible
-  document.addEventListener('visibilitychange', ()=>{
-    if(document.hidden){
-      // pause heavy loops if necessary (code rain uses rAF which auto-pauses in many browsers)
-    }
+(function initTitleAnimation() {
+  const title = qs('.hero-title');
+  if (!title) return;
+  
+  // Add letter-by-letter animation
+  const text = title.textContent;
+  title.innerHTML = '';
+  
+  // Wrap each character in a span for animation
+  text.split('').forEach((char, i) => {
+    const span = document.createElement('span');
+    span.textContent = char;
+    span.style.opacity = '0';
+    span.style.transform = 'translateY(20px)';
+    span.style.display = 'inline-block';
+    span.style.transition = `opacity 0.6s ease ${i * 0.05}s, transform 0.6s ease ${i * 0.05}s`;
+    title.appendChild(span);
   });
+  
+  // Trigger animation after a delay
+  setTimeout(() => {
+    title.querySelectorAll('span').forEach(span => {
+      span.style.opacity = '1';
+      span.style.transform = 'translateY(0)';
+    });
+  }, 1000);
 })();
 </script>
 
