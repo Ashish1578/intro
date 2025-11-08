@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Introduction</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 900px;
+            padding: 60px 40px;
+            background: #1a1a1a;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+            border: 1px solid #333;
+        }
+
+        .typing-container {
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            min-height: 80px;
+        }
+
+        .typing-text {
+            border-right: 3px solid #00ff88;
+            animation: blink 0.7s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                border-color: transparent;
+            }
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .content {
+            line-height: 1.8;
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+
+        .content p {
+            margin-bottom: 20px;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .skill-tag {
+            background: #2a2a2a;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            border: 1px solid #444;
+            transition: all 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            background: #333;
+            transform: translateY(-3px);
+            border-color: #00ff88;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 35px;
+            border: 2px solid #00ff88;
+            background: transparent;
+            color: #00ff88;
+            font-size: 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #00ff88;
+            color: #0a0a0a;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+        }
+
+        .btn-primary {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: #00ff88;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 25px;
+            }
+
+            h1 {
+                font-size: 2rem;
+                min-height: 60px;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            .content {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="typing-container">
+            <h1><span class="typing-text" id="typingText"></span></h1>
+            <h2>Professional Developer & Creative Problem Solver</h2>
+        </div>
+
+        <div class="content">
+            <p>
+                Welcome! I'm passionate about creating innovative solutions and bringing ideas to life through technology. 
+                With expertise in modern web development and a keen eye for design, I craft experiences that are both 
+                beautiful and functional.
+            </p>
+            <p>
+                My approach combines technical excellence with creative thinking, ensuring every project not only meets 
+                but exceeds expectations. I believe in continuous learning and staying at the forefront of technology.
+            </p>
+        </div>
+
+        <div class="skills">
+            <span class="skill-tag">Web Development</span>
+            <span class="skill-tag">UI/UX Design</span>
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">React</span>
+            <span class="skill-tag">Problem Solving</span>
+            <span class="skill-tag">Team Collaboration</span>
+        </div>
+
+        <div class="cta-buttons">
+            <button class="btn btn-primary" onclick="alert('Contact form would open here')">Get In Touch</button>
+            <button class="btn" onclick="alert('Portfolio would open here')">View My Work</button>
+        </div>
+    </div>
+
+    <script>
+        const text = "Hi, I'm Your Name";
+        const typingText = document.getElementById('typingText');
+        let index = 0;
+
+        function type() {
+            if (index < text.length) {
+                typingText.textContent += text.charAt(index);
+                index++;
+                setTimeout(type, 100);
+            }
+        }
+
+        // Start typing animation after a brief delay
+        setTimeout(type, 500);
+    </script>
+</body>
+</html>
